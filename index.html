@@ -15,7 +15,7 @@
     <!-- Custom Styles -->
     <link rel="stylesheet" href="style.css" />
 
-    <title>Event Invitation</title>
+    <title>Nour & Joe Wedding Invitation</title>
 </head>
 
 <body>
@@ -37,7 +37,7 @@
         <i class="fas fa-play"></i>
     </button>
 
-    <div class="container">
+    <div class="container" id="slides">
         <div class="slide active" id="welcome">
             <div class="content-wrapper">
                 <h1>Tap To Start</h1>
@@ -115,13 +115,36 @@
             <!-- Guest Count Input -->
             <div id="guest-count">
                 <p id="guest-limit"></p>
-                <input type="number" id="guest-number" placeholder="Number of Guests" min="1" />
+                <div class="guest-input-container">
+                    <button type="button" class="guest-btn" onclick="decreaseGuest()">−</button>
+                    <input type="number" id="guest-number" value="1" min="1" />
+                    <button type="button" class="guest-btn" onclick="increaseGuest()">+</button>
+                </div>
             </div>
 
             <!-- Centered Confirm Button -->
             <button id="confirm-button" onclick="confirmRSVP()" style="display: none;">Confirm Attendance</button>
         </div>
     </div>
+    <div id="rsvp-confirm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeConfirmationModal()">&times;</span>
+            <p id="confirmation-message"></p>
+        </div>
+    </div>
+    <!-- Fullscreen Loading Overlay -->
+    <div id="loading-screen">
+        <script>document.getElementById("slides").style.display = "none"; </script>
+        <div class="loading-content">
+            <p>Loading your invitation</p>
+            <div class="dots-loader">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
 
     <!-- Custom Script -->
     <script src="script.js"></script>

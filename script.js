@@ -1,8 +1,28 @@
-// Invitees list with max guests allowed
-const invitees = [
-    { name: "Moussa Family", maxGuests: 3 },
-    { name: "Tannous Family", maxGuests: 5 },
-];
+// // Invitees list with max guests allowed
+// const invitees = [
+//     { name: "Moussa Family", maxGuests: 3 },
+//     { name: "Tannous Family", maxGuests: 5 },
+// ];
+let invitees = []; // Empty list until data is fetched
+
+async function fetchInvitees() {
+    try {
+        const response = await fetch("https://script.google.com/macros/s/AKfycbwJs6BmCqvUQLJ9shyT1k3XDR4CqETkRL2fKNmqjGV95gdt77Pb-GVv8gRENFHFCy8/exec");
+        invitees = await response.json();
+        console.log("Invitees loaded:", invitees);
+
+        // Now that the invitees are loaded, check if the guest is valid
+        checkGuestFromURL();
+    } catch (error) {
+        console.error("Error fetching invitees:", error);
+        showErrorScreen(); // If fetching fails, show the error screen
+    }
+}
+
+
+// Fetch invitees on page load
+fetchInvitees();
+
 
 let currentIndex = 0;
 const slides = document.querySelectorAll(".slide");
@@ -22,23 +42,27 @@ function handleTouchStart(evt) {
 
 function handleTouchMove(evt) {
     if (!xDown) return;
+
     let xUp = evt.touches[0].clientX;
     let xDiff = xDown - xUp;
+
+    // Prevent swipe when on the first slide (index 0)
+    if (currentIndex === 0) return;
+
     if (xDiff > 0) {
         nextSlide();
     } else {
         prevSlide();
     }
+
     xDown = null;
 }
+
 
 function firstSlide() {
     isPlaying = false;
     toggleMusic();
-    if (currentIndex < slides.length - 1) {
-        currentIndex++;
-        updateSlidePosition();
-    }
+    nextSlide();
 }
 
 function nextSlide() {
@@ -86,7 +110,6 @@ function openModal() {
 
 function closeModal() {
     document.getElementById("rsvp-modal").style.display = "none";
-    selectedInvitee = null;
 }
 
 // Show the chosen guest's info in the modal
@@ -115,38 +138,54 @@ function confirmRSVP() {
 
     const rsvpResponse = "Confirmed";
     let guestCount = 0;
-    // If we allow guests, read the number input
+
+    // If guests are allowed, read the input value
     if (selectedInvitee.maxGuests > 0) {
         guestCount = parseInt(document.getElementById("guest-number").value, 10);
         if (!guestCount || guestCount <= 0 || guestCount > selectedInvitee.maxGuests) {
-            alert(`Please enter a valid number of guests (Max: ${selectedInvitee.maxGuests}).`);
+            showConfirmationPopup(`Please enter a valid number of guests (Max: ${selectedInvitee.maxGuests}).`, true);
             return;
         }
     }
 
-    // Send RSVP to Google Apps Script
-    fetch(
-        "https://script.google.com/macros/s/AKfycbwJs6BmCqvUQLJ9shyT1k3XDR4CqETkRL2fKNmqjGV95gdt77Pb-GVv8gRENFHFCy8/exec",
-        {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name: selectedInvitee.name,
-                response: rsvpResponse,
-                guestCount: guestCount,
-            }),
-        }
-    );
+    // Send RSVP Data
+    fetch("https://script.google.com/macros/s/AKfycbwJs6BmCqvUQLJ9shyT1k3XDR4CqETkRL2fKNmqjGV95gdt77Pb-GVv8gRENFHFCy8/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: selectedInvitee.name,
+            response: rsvpResponse,
+            guestCount: guestCount
+        })
+    });
 
-    const message =
-        guestCount > 0
-            ? `RSVP confirmed for ${selectedInvitee.name} with ${guestCount} guests.`
-            : `RSVP confirmed for ${selectedInvitee.name}.`;
+    // Custom popup message
+    const message = guestCount > 0
+        ? `RSVP confirmed for ${selectedInvitee.name} with ${guestCount} guests.`
+        : `RSVP confirmed for ${selectedInvitee.name}.`;
 
-    alert(message);
-    closeModal();
+    showConfirmationPopup(message);
+    closeModal(); // Close RSVP input modal
 }
+
+function showConfirmationPopup(message, isError = false) {
+    const modal = document.getElementById("rsvp-confirm-modal");
+    const messageElement = document.getElementById("confirmation-message");
+
+    messageElement.textContent = message;
+
+    // Change color for errors (optional)
+    messageElement.style.color = isError ? "red" : "black";
+
+    modal.style.display = "flex"; // Show modal
+}
+
+// Function to close the popup
+function closeConfirmationModal() {
+    document.getElementById("rsvp-confirm-modal").style.display = "none";
+}
+
 
 // --------------------------------------------------------------------------
 // Function to decode the invitee's name (Shift by 3 approach)
@@ -159,27 +198,58 @@ function decodeName(encodedName) {
         .join('');
 }
 
-// Properly extract the "key" parameter from the full URL
-const urlParams = new URLSearchParams(window.location.search);
-let encodedKey = urlParams.get("key");
+function checkGuestFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let encodedKey = urlParams.get("key");
 
-// Ensure we properly decode the full encoded string
-if (encodedKey) {
-    encodedKey = decodeURIComponent(encodedKey); // Decode URL encoding
-    const guestName = decodeName(encodedKey);
-    console.log("Decoded guest name:", guestName);
+    if (encodedKey) {
+        encodedKey = decodeURIComponent(encodedKey);
+        const guestName = decodeName(encodedKey);
+        console.log("Decoded guest name:", guestName);
 
-    // Find the matching invitee in the list
-    const foundInvitee = invitees.find(inv => inv.name === guestName);
-    if (foundInvitee) {
-        // Store it so it can be used when opening the RSVP modal
-        selectedInvitee = foundInvitee;
+        const foundInvitee = invitees.find(inv => inv.name === guestName);
+        if (foundInvitee) {
+            selectedInvitee = foundInvitee;
+            hideLoadingScreen(); // Only hide loading if the guest is valid
+        } else {
+            showErrorScreen(); // If guest is not found, show error
+        }
     } else {
-        showErrorScreen(); // Show contact options instead of an alert
+        showErrorScreen(); // If no key exists, show error
     }
-} else {
-    showErrorScreen(); // If there's no key, show the contact options
 }
+
+function hideLoadingScreen() {
+    const loadingScreen = document.getElementById("loading-screen");
+    loadingScreen.style.opacity = "0"; // Fade out
+    document.getElementById("slides").style.display = "flex";
+    setTimeout(() => {
+        loadingScreen.style.display = "none"; // Hide after fade-out
+    }, 500);
+}
+
+
+// // Properly extract the "key" parameter from the full URL
+// const urlParams = new URLSearchParams(window.location.search);
+// let encodedKey = urlParams.get("key");
+
+// // Ensure we properly decode the full encoded string
+// if (encodedKey) {
+//     encodedKey = decodeURIComponent(encodedKey); // Decode URL encoding
+//     const guestName = decodeName(encodedKey);
+//     console.log("Decoded guest name:", guestName);
+
+//     // Find the matching invitee in the list
+//     const foundInvitee = invitees.find(inv => inv.name === guestName);
+//     if (foundInvitee) {
+//         // Store it so it can be used when opening the RSVP modal
+//         selectedInvitee = foundInvitee;
+//     } else {
+//         showErrorScreen(); // Show contact options instead of an alert
+//     }
+// } else {
+//     showErrorScreen(); // If there's no key, show the contact options
+// }
 
 // Function to show the "Invalid Link" error screen
 function showErrorScreen() {
@@ -248,4 +318,24 @@ function showErrorScreen() {
       }
     `;
     document.head.appendChild(style);
+}
+
+function decreaseGuest() {
+    let guestInput = document.getElementById("guest-number");
+    let minGuests = parseInt(guestInput.min, 10) || 1;
+    let currentValue = parseInt(guestInput.value, 10) || minGuests;
+
+    if (currentValue > minGuests) {
+        guestInput.value = currentValue - 1;
+    }
+}
+
+function increaseGuest() {
+    let guestInput = document.getElementById("guest-number");
+    let maxGuests = parseInt(guestInput.max, 10) || 10;
+    let currentValue = parseInt(guestInput.value, 10) || 1;
+
+    if (currentValue < maxGuests) {
+        guestInput.value = currentValue + 1;
+    }
 }
