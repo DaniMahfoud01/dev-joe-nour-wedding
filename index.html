@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Event Invitation</title>
+</head>
+
+<body>
+    <div class="background-wrapper">
+        <video class="background-video" autoplay loop muted playsinline>
+            <source src="background.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+        <div class="background-overlay"></div>
+    </div>
+
+    <audio id="background-music" loop autoplay>
+        <source src="music.mp3" type="audio/mp3" />
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Play/Pause Button -->
+    <button class="music-button" id="music-button" onclick="toggleMusic()">
+        <i class="fas fa-play"></i>
+    </button>
+
+    <div class="container">
+        <div class="slide active" id="welcome">
+            <div class="content-wrapper">
+                <h1>Tap To Start</h1>
+                <div class="start-button" onclick="firstSlide()">Start</div>
+            </div>
+        </div>
+
+        <div class="slide" id="invitation">
+            <div class="content-wrapper">
+                <h1>
+                    Joe Mahfoud<br />
+                    &amp;<br />
+                    Nour Al Moundalek
+                </h1>
+                <p>We invite you to celebrate our special day with us.</p>
+            </div>
+            <div class="swipe-indicator">
+                <i class="fas fa-arrow-left"></i> Swipe Left
+            </div>
+        </div>
+
+        <div class="slide" id="details">
+            <div class="content-wrapper" style="gap: 8px;">
+                <h1>Event Details</h1>
+                <p class="date-time">
+                    <i class="fas fa-calendar-alt"></i> Saturday, July 19, 2025 • 6:00 PM
+                </p>
+                <p class="church">
+                    <i class="fas fa-church"></i>
+                    <a class="location-link" href="https://maps.app.goo.gl/eAmHneatLCUcbXtLA" target="_blank">St. George
+                        Church, Beirut</a>
+                </p>
+                <p class="venue">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a class="location-link" href="https://maps.app.goo.gl/JHJr8kcrwEjmnRiQA" target="_blank">The
+                        Rosewood Ballroom, Riyadh</a>
+                </p>
+            </div>
+            <div class="swipe-indicator">
+                <i class="fas fa-arrow-left"></i> Swipe Left
+            </div>
+        </div>
+
+        <div class="slide" id="gift-registry">
+            <div class="content-wrapper">
+                <h1>Gift Registry</h1>
+                <p>
+                    We appreciate your generosity. You can contribute to our future by
+                    sending gifts to the following accounts:
+                </p>
+                <p>Bank Account: 123456789</p>
+                <p>PayPal: alicejohnwedding@paypal.com</p>
+            </div>
+            <div class="swipe-indicator">
+                <i class="fas fa-arrow-left"></i> Swipe Left
+            </div>
+        </div>
+
+        <div class="slide" id="rsvp">
+            <div class="content-wrapper">
+                <h1>RSVP</h1>
+                <p>Let us know if you can make it!</p>
+                <button>Confirm Attendance</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- RSVP Modal -->
+    <div id="rsvp-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <!-- We show the name or instructions here -->
+            <p>Confirm RSVP for <strong id="selected-name"></strong></p>
+
+            <!-- Guest Count Input -->
+            <div id="guest-count">
+                <p id="guest-limit"></p>
+                <input type="number" id="guest-number" placeholder="Number of Guests" min="1" />
+            </div>
+
+            <!-- Centered Confirm Button -->
+            <button id="confirm-button" onclick="confirmRSVP()" style="display: none;">Confirm Attendance</button>
+        </div>
+    </div>
+
+    <!-- Custom Script -->
+    <script src="script.js"></script>
+</body>
+
+</html>
