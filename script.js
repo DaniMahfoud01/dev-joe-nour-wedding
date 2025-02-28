@@ -149,7 +149,7 @@ function confirmRSVP() {
     }
 
     // Send RSVP Data
-    fetch("https://script.google.com/macros/s/AKfycbwJs6BmCqvUQLJ9shyT1k3XDR4CqETkRL2fKNmqjGV95gdt77Pb-GVv8gRENFHFCy8/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
