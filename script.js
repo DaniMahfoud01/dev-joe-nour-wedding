@@ -7,7 +7,7 @@ let invitees = []; // Empty list until data is fetched
 
 async function fetchInvitees() {
     try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbwJs6BmCqvUQLJ9shyT1k3XDR4CqETkRL2fKNmqjGV95gdt77Pb-GVv8gRENFHFCy8/exec");
+        const response = await fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec");
         invitees = await response.json();
         console.log("Invitees loaded:", invitees);
 
