@@ -1,8 +1,3 @@
-// // Invitees list with max guests allowed
-// const invitees = [
-//     { name: "Moussa Family", maxGuests: 3 },
-//     { name: "Tannous Family", maxGuests: 5 },
-// ];
 let invitees = []; // Empty list until data is fetched
 
 async function fetchInvitees() {
