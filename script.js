@@ -1,4 +1,4 @@
-let invitees = []; // Empty list until data is fetched
+let invitees = [];
 
 async function fetchInvitees() {
     try {
@@ -146,7 +146,7 @@ function confirmRSVP() {
     // Send RSVP Data
     fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec", {
         method: "POST",
-        mode:"no-cors",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             name: selectedInvitee.name,
@@ -222,29 +222,6 @@ function hideLoadingScreen() {
         loadingScreen.style.display = "none"; // Hide after fade-out
     }, 500);
 }
-
-
-// // Properly extract the "key" parameter from the full URL
-// const urlParams = new URLSearchParams(window.location.search);
-// let encodedKey = urlParams.get("key");
-
-// // Ensure we properly decode the full encoded string
-// if (encodedKey) {
-//     encodedKey = decodeURIComponent(encodedKey); // Decode URL encoding
-//     const guestName = decodeName(encodedKey);
-//     console.log("Decoded guest name:", guestName);
-
-//     // Find the matching invitee in the list
-//     const foundInvitee = invitees.find(inv => inv.name === guestName);
-//     if (foundInvitee) {
-//         // Store it so it can be used when opening the RSVP modal
-//         selectedInvitee = foundInvitee;
-//     } else {
-//         showErrorScreen(); // Show contact options instead of an alert
-//     }
-// } else {
-//     showErrorScreen(); // If there's no key, show the contact options
-// }
 
 // Function to show the "Invalid Link" error screen
 function showErrorScreen() {
@@ -334,3 +311,43 @@ function increaseGuest() {
         guestInput.value = currentValue + 1;
     }
 }
+
+// Countdown to Wedding Date
+function startCountdown() {
+    const weddingDate = new Date("July 19, 2025 18:00:00").getTime();
+    const countdownTimerElem = document.getElementById("countdown-timer");
+
+    // Update every second
+    const timerInterval = setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        if (distance <= 0) {
+            // If the countdown is finished, stop updating
+            clearInterval(timerInterval);
+            countdownTimerElem.textContent = "It's happening now!";
+            return;
+        }
+
+        // Calculate days, hours, minutes, seconds
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result
+        countdownTimerElem.innerHTML = `
+        <div><strong>${days}</strong><br>Days</div>
+        <div><strong>${hours}</strong><br>Hours</div>
+        <div><strong>${minutes}</strong><br>Minutes</div>
+        <div><strong>${seconds}</strong><br>Seconds</div>
+      `;
+    }, 1000);
+}
+
+// Make sure this runs once the DOM is ready (and after invitee checks)
+document.addEventListener("DOMContentLoaded", () => {
+    // Only start countdown if the link is valid, i.e. after hideLoadingScreen() is called
+    // so that #countdown-timer is visible in the DOM.
+    startCountdown();
+});
