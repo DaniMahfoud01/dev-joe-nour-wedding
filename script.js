@@ -118,7 +118,7 @@ function showGuest(invitee) {
         document.getElementById("guest-number").value = 1; // default
         document.getElementById("guest-number").max = invitee.maxGuests;
         document.getElementById("guest-limit").textContent =
-            `Max: ${invitee.maxGuests} guests`;
+            `${invitee.maxGuests} guests`;
     } else {
         document.getElementById("guest-count").style.display = "none";
     }
@@ -156,9 +156,8 @@ function confirmRSVP() {
     });
 
     // Custom popup message
-    const message = guestCount > 0
-        ? `RSVP confirmed for ${selectedInvitee.name} with ${guestCount} guests.`
-        : `RSVP confirmed for ${selectedInvitee.name}.`;
+    const message = `Thank you for your confirmation!
+                      We can't wait to celebrate with you ♡`;
 
     showConfirmationPopup(message);
     closeModal(); // Close RSVP input modal
@@ -339,8 +338,8 @@ function startCountdown() {
         countdownTimerElem.innerHTML = `
         <div><strong>${days}</strong><br>Days</div>
         <div><strong>${hours}</strong><br>Hours</div>
-        <div><strong>${minutes}</strong><br>Minutes</div>
-        <div><strong>${seconds}</strong><br>Seconds</div>
+        <div><strong>${minutes}</strong><br>Min</div>
+        <div><strong>${seconds}</strong><br>Sec</div>
       `;
     }, 1000);
 }
