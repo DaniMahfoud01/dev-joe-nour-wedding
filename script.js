@@ -42,7 +42,7 @@ function handleTouchMove(evt) {
     let xDiff = xDown - xUp;
 
     // Prevent swipe when on the first slide (index 0)
-    if (currentIndex === 0) return;
+    // if (currentIndex === 0) return;
 
     if (xDiff > 0) {
         nextSlide();
@@ -68,7 +68,7 @@ function nextSlide() {
 }
 
 function prevSlide() {
-    if (currentIndex > 1) {
+    if (currentIndex > 0) {
         currentIndex--;
         updateSlidePosition();
     }

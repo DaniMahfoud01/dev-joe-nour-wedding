@@ -483,4 +483,25 @@
     transform-origin: bottom left;
   }
   
+  .parents-row {
+    display: flex;               /* horizontal layout */
+    justify-content: center;     /* centers all items horizontally */
+    align-items: center;         /* vertically centers them within the row */
+    gap: 2rem;                   /* space between columns */
+    margin-bottom: 2rem;         /* some spacing below */
+    font-size: large;
+    font-family: "Playfair Display", serif; 
+    font-weight: bold;
+  }
+  
+  .parents-column {
+    display: flex;
+    flex-direction: column;      /* stack the two name lines */
+    text-align: center;
+    line-height: 1.5;
+  }
+  
+  .ampersand {
+    font-size: 2rem;             /* enlarge the & if you like */
+  }
   
