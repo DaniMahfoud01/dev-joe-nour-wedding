@@ -505,3 +505,20 @@
     font-size: 2rem;             /* enlarge the & if you like */
   }
   
+  #sticky-countdown {
+    display: none;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.8); /* Light translucent background */
+    padding: 8px 16px;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #D63384; /* A sexy pink/purple color */
+    font-family: "Caveat", cursive; /* Cute handwritten font */
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Always above other elements */
+    transition: opacity 0.3s ease-in-out;
+}

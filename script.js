@@ -25,6 +25,8 @@ const music = document.getElementById("background-music");
 const musicButton = document.getElementById("music-button");
 let isPlaying = false;
 let selectedInvitee = null;
+const weddingDate = new Date("July 19, 2025 18:00:00").getTime();
+
 
 window.addEventListener("touchstart", handleTouchStart, false);
 window.addEventListener("touchmove", handleTouchMove, false);
@@ -55,12 +57,17 @@ function handleTouchMove(evt) {
 
 
 function firstSlide() {
+    music.play();
     isPlaying = false;
     toggleMusic();
     nextSlide();
 }
 
 function nextSlide() {
+    if (currentIndex === 0) {
+        isPlaying = false;
+        toggleMusic();
+    }
     if (currentIndex < slides.length - 1) {
         currentIndex++;
         updateSlidePosition();
@@ -78,6 +85,13 @@ function updateSlidePosition() {
     slides.forEach((slide, index) => {
         slide.style.transform = `translateX(-${currentIndex * 100}vw)`;
     });
+    // Show countdown ONLY if it's NOT the first slide
+    const countdown = document.getElementById("sticky-countdown");
+    if (currentIndex > 0) {
+        countdown.style.display = "block"; // Show countdown
+    } else {
+        countdown.style.display = "none";  // Hide countdown
+    }
 }
 
 function toggleMusic() {
@@ -156,8 +170,8 @@ function confirmRSVP() {
     });
 
     // Custom popup message
-    const message = `Thank you for your confirmation!
-                      We can't wait to celebrate with you ♡`;
+    const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
+
 
     showConfirmationPopup(message);
     closeModal(); // Close RSVP input modal
@@ -167,7 +181,7 @@ function showConfirmationPopup(message, isError = false) {
     const modal = document.getElementById("rsvp-confirm-modal");
     const messageElement = document.getElementById("confirmation-message");
 
-    messageElement.textContent = message;
+    messageElement.innerHTML = message;
 
     // Change color for errors (optional)
     messageElement.style.color = isError ? "red" : "black";
@@ -313,7 +327,6 @@ function increaseGuest() {
 
 // Countdown to Wedding Date
 function startCountdown() {
-    const weddingDate = new Date("July 19, 2025 18:00:00").getTime();
     const countdownTimerElem = document.getElementById("countdown-timer");
 
     // Update every second
@@ -343,10 +356,32 @@ function startCountdown() {
       `;
     }, 1000);
 }
+function startCountdownSticky() {
+    const countdownTimerElem = document.getElementById("countdown-timer-sticky");
+
+    setInterval(() => {
+        const now = new Date().getTime();
+        const distance = weddingDate - now;
+
+        if (distance <= 0) {
+            countdownTimerElem.innerHTML = "It's happening now!";
+            return;
+        }
+
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        countdownTimerElem.innerHTML = `<strong>${days}</strong> days <strong>${hours}</strong>h 
+                                        <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
+    }, 1000);
+}
 
 // Make sure this runs once the DOM is ready (and after invitee checks)
 document.addEventListener("DOMContentLoaded", () => {
     // Only start countdown if the link is valid, i.e. after hideLoadingScreen() is called
     // so that #countdown-timer is visible in the DOM.
     startCountdown();
+    startCountdownSticky();
 });
