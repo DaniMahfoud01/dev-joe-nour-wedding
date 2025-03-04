@@ -105,6 +105,10 @@ function toggleMusic() {
     isPlaying = !isPlaying;
 }
 
+function toggleMusicInitial() {
+    music.play();
+}
+
 // --------------------------------------------------------------------------
 // Open the modal when the RSVP button is clicked
 document.querySelector("#rsvp button").addEventListener("click", openModal);

@@ -509,8 +509,8 @@
     display: none;
     position: fixed;
     top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 40%;
+    transform: translateX(-40%);
     background: rgba(255, 255, 255, 0.8); /* Light translucent background */
     padding: 8px 16px;
     border-radius: 25px;
