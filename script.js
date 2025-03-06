@@ -132,7 +132,7 @@ function showGuest(invitee) {
     // If maxGuests > 0, show the number field
     if (invitee.maxGuests > 0) {
         document.getElementById("guest-count").style.display = "block";
-        document.getElementById("guest-number").value = 1; // default
+        document.getElementById("guest-number").value = invitee.maxGuests; // default
         document.getElementById("guest-number").max = invitee.maxGuests;
         document.getElementById("guest-limit").textContent =
             `${invitee.maxGuests} guests`;
