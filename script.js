@@ -1,36 +1,49 @@
+let xDown = null;
 let invitees = [];
-
-async function fetchInvitees() {
-    try {
-        const response = await fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec");
-        invitees = await response.json();
-
-        // Now that the invitees are loaded, check if the guest is valid
-        checkGuestFromURL();
-    } catch (error) {
-        console.error("Error fetching invitees:", error);
-        showErrorScreen(); // If fetching fails, show the error screen
-    }
-}
-
-
-// Fetch invitees on page load
-fetchInvitees();
-
-
 let currentIndex = 0;
+let isPlaying = false;
+let selectedInvitee = null;
 const slides = document.querySelectorAll(".slide");
 const music = document.getElementById("background-music");
 const musicButton = document.getElementById("music-button");
-let isPlaying = false;
-let selectedInvitee = null;
 const weddingDate = new Date("July 19, 2025 18:00:00").getTime();
 
+const parts = [
+    "aHR0cHM6Ly9zY3JpcHQu",
+    "Z29vZ2xlLmNvbS9tYWNyb3M",
+    "vcy9BS2Z5Y2J6SzZyUlg0RDNJbl9OQ3FlZjh6",
+    "QVhDYnJSejhpSVdPT3BxUGtqbjUyVmFyYjdibHZpTFFmWTJq",
+    "ZnItcmhtRXZlby9leGVjIg=="
+];
 
-window.addEventListener("touchstart", handleTouchStart, false);
+const ShParts = [parts[3], parts[0], parts[4], parts[1], parts[2]];
+const CoOrParts = [ShParts[1], ShParts[3], ShParts[4], ShParts[0], ShParts[2]];
+const fuEnParts = CoOrParts.join("");
+const aU = atob(fuEnParts);
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Only start countdown if the link is valid, i.e. after hideLoadingScreen() is called
+    // so that #countdown-timer is visible in the DOM.
+    startCountdown();
+    startCountdownSticky();
+});
+document.querySelector("#rsvp button").addEventListener("click", openModal);
+
 window.addEventListener("touchmove", handleTouchMove, false);
+window.addEventListener("touchstart", handleTouchStart, false);
 
-let xDown = null;
+fetchInvitees();
+
+async function fetchInvitees() {
+    try {
+        const response = await fetch(aU.replace(/"$/, ""));
+        invitees = await response.json();
+        checkGuestFromURL();
+    } catch (error) {
+        console.error("Error fetching invitees:", error);
+        showErrorScreen();
+    }
+}
 
 function handleTouchStart(evt) {
     xDown = evt.touches[0].clientX;
@@ -43,7 +56,7 @@ function handleTouchMove(evt) {
     let xDiff = xDown - xUp;
 
     // Prevent swipe when on the first slide (index 0)
-    // if (currentIndex === 0) return;
+    if (currentIndex === 0) return;
 
     if (xDiff > 0) {
         nextSlide();
@@ -53,7 +66,6 @@ function handleTouchMove(evt) {
 
     xDown = null;
 }
-
 
 function firstSlide() {
     music.play();
@@ -74,7 +86,7 @@ function nextSlide() {
 }
 
 function prevSlide() {
-    if (currentIndex > 0) {
+    if (currentIndex > 1) {
         currentIndex--;
         updateSlidePosition();
     }
@@ -108,10 +120,6 @@ function toggleMusicInitial() {
     music.play();
 }
 
-// --------------------------------------------------------------------------
-// Open the modal when the RSVP button is clicked
-document.querySelector("#rsvp button").addEventListener("click", openModal);
-
 function openModal() {
     // If we already found a valid guest from the URL, show them
     if (selectedInvitee) {
@@ -124,7 +132,6 @@ function closeModal() {
     document.getElementById("rsvp-modal").style.display = "none";
 }
 
-// Show the chosen guest's info in the modal
 function showGuest(invitee) {
     selectedInvitee = invitee;
     document.getElementById("selected-name").textContent = invitee.name;
@@ -144,7 +151,6 @@ function showGuest(invitee) {
     document.getElementById("confirm-button").style.display = "block";
 }
 
-// Confirm RSVP when user clicks the confirm button
 function confirmRSVP() {
     if (!selectedInvitee) return;
 
@@ -161,21 +167,16 @@ function confirmRSVP() {
     }
 
     // Send RSVP Data
-    fetch("./config.js")
-        .then(response => response.text())
-        .then(apiScript => {
-            eval(apiScript);  // Executes the script to set apiUrl variable
-
-            fetch(apiUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: selectedInvitee.name,
-                    response: rsvpResponse,
-                    guestCount: guestCount
-                })
-            });
-        });
+    fetch(aU.replace(/"$/, ""), {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: selectedInvitee.name,
+            response: rsvpResponse,
+            guestCount: guestCount
+        })
+    });
 
     // Custom popup message
     const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
@@ -197,14 +198,10 @@ function showConfirmationPopup(message, isError = false) {
     modal.style.display = "flex"; // Show modal
 }
 
-// Function to close the popup
 function closeConfirmationModal() {
     document.getElementById("rsvp-confirm-modal").style.display = "none";
 }
 
-
-// --------------------------------------------------------------------------
-// Function to decode the invitee's name (Shift by 3 approach)
 function decodeName(encodedName) {
     return encodedName
         .split('')
@@ -243,7 +240,6 @@ function hideLoadingScreen() {
     }, 500);
 }
 
-// Function to show the "Invalid Link" error screen
 function showErrorScreen() {
     document.body.innerHTML = `
       <div class="background-wrapper">
@@ -332,7 +328,6 @@ function increaseGuest() {
     }
 }
 
-// Countdown to Wedding Date
 function startCountdown() {
     const countdownTimerElem = document.getElementById("countdown-timer");
 
@@ -384,14 +379,6 @@ function startCountdownSticky() {
                                         <strong>${minutes}</strong>m <strong>${seconds}</strong>s`;
     }, 1000);
 }
-
-// Make sure this runs once the DOM is ready (and after invitee checks)
-document.addEventListener("DOMContentLoaded", () => {
-    // Only start countdown if the link is valid, i.e. after hideLoadingScreen() is called
-    // so that #countdown-timer is visible in the DOM.
-    startCountdown();
-    startCountdownSticky();
-});
 
 function startExperience() {
     const overlay = document.getElementById("tap-to-start-overlay");
