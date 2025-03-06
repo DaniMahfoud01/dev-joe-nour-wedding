@@ -161,16 +161,21 @@ function confirmRSVP() {
     }
 
     // Send RSVP Data
-    fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec", {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            name: selectedInvitee.name,
-            response: rsvpResponse,
-            guestCount: guestCount
-        })
-    });
+    fetch("./config.js")
+        .then(response => response.text())
+        .then(apiScript => {
+            eval(apiScript);  // Executes the script to set apiUrl variable
+
+            fetch(apiUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    name: selectedInvitee.name,
+                    response: rsvpResponse,
+                    guestCount: guestCount
+                })
+            });
+        });
 
     // Custom popup message
     const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
