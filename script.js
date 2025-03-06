@@ -4,7 +4,6 @@ async function fetchInvitees() {
     try {
         const response = await fetch("https://script.google.com/macros/s/AKfycbzK6rRX4D3In_NCqef8zAXCbrRz8iIWOOpqPkjn52Varb7blviLQfY2jfr-rhmEveo/exec");
         invitees = await response.json();
-        console.log("Invitees loaded:", invitees);
 
         // Now that the invitees are loaded, check if the guest is valid
         checkGuestFromURL();
@@ -87,7 +86,7 @@ function updateSlidePosition() {
     });
     // Show countdown ONLY if it's NOT the first slide
     const countdown = document.getElementById("sticky-countdown");
-    if (currentIndex > 0) {
+    if (currentIndex > 1) {
         countdown.style.display = "block"; // Show countdown
     } else {
         countdown.style.display = "none";  // Hide countdown
@@ -217,7 +216,6 @@ function checkGuestFromURL() {
     if (encodedKey) {
         encodedKey = decodeURIComponent(encodedKey);
         const guestName = decodeName(encodedKey);
-        console.log("Decoded guest name:", guestName);
 
         const foundInvitee = invitees.find(inv => inv.name === guestName);
         if (foundInvitee) {
@@ -389,3 +387,15 @@ document.addEventListener("DOMContentLoaded", () => {
     startCountdown();
     startCountdownSticky();
 });
+
+function startExperience() {
+    const overlay = document.getElementById("tap-to-start-overlay");
+    overlay.style.opacity = "0"; // Fade out effect
+    setTimeout(() => {
+        overlay.style.display = "none"; // Hide completely after fade
+    }, 500);
+
+    // Start music (if applicable)
+    toggleMusic();
+
+}
