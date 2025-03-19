@@ -28,7 +28,7 @@
     background-attachment: fixed; 
     
     /* Position the background */
-    background-position: center;  
+    background-position: left;  
  }
 
   
@@ -94,6 +94,11 @@
     padding: 20px;
     box-sizing: border-box;
     overflow: hidden;
+  }
+
+  .slide-special {
+    padding-top: 50% !important;
+    justify-content: start !important;
   }
   
   .slide h1 {
