@@ -11,7 +11,7 @@
     /* overflow-x: hidden; hide horizontal scroll */
     /* overflow-y: auto; allow vertical scroll if slide content is too tall */
     color: white;
-    background-image: url('initialBackground.jpg'); 
+    background-image: url('background.jpg'); 
     background-size: cover;       
     background-repeat: no-repeat; 
     background-attachment: fixed; 
@@ -56,7 +56,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
 
@@ -141,18 +141,16 @@
   
   .start-button {
     font-size: 30px;
-    border-radius: 100%;
     transition: 0.3s;
-    border: 2px solid white;
+    border-bottom: 2px solid white;
     background: transparent;
     color: white;
-    width: 160px;
-    height: 160px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 20px;
+    margin-top: 350px;
   }
   
   h1,
@@ -166,7 +164,7 @@
   
   .location-link {
     font-size: 16px;
-    color: black;
+    color: white;
     text-decoration: underline;
     font-weight: bold;
   }
@@ -432,13 +430,13 @@
   
   .day-of-week {
     font-weight: bold;
-    color: black;
+    color: white;
   }
   
   .calendar-grid div {
     font-family: "Playfair Display", serif;
     font-size: 1rem;
-    color: black;
+    color: white;
     width: 40px;
     height: 40px;
     display: flex;
@@ -493,12 +491,14 @@
     justify-content: center;     /* centers all items horizontally */
     align-items: center;         /* vertically centers them within the row */
     gap: 2rem;                   /* space between columns */
-    margin-bottom: 2rem;         /* some spacing below */
+    margin-top: 5rem;
+    margin-bottom: 5rem;
     font-size: large;
     font-weight: bold;
   }
   
   .parents-column {
+    font-size: 15px;
     display: flex;
     flex-direction: column;      /* stack the two name lines */
     text-align: center;
@@ -536,7 +536,7 @@
     width: 100%;
     height: 100%;
 
-    background-image: url('initialBackground.jpg'); 
+    background-image: url('Background.jpg'); 
     background-size: cover;       
     background-repeat: no-repeat; 
     background-attachment: fixed; 

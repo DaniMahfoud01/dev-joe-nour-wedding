@@ -45,7 +45,6 @@
             Your browser does not support the video tag.
         </video>
     </div> -->
-    <!-- <div class="background-overlay"></div> -->
 
     <audio id="background-music" loop autoplay>
         <source src="music.mp3" type="audio/mp3" />
@@ -58,21 +57,17 @@
     </button>
 
     <div class="container" id="slides">
+        <!-- Start of First Screen -->
         <div class="slide active background-overlay" id="welcome">
             <div class="content-wrapper">
-                <!-- <h1>Tap To Start</h1> -->
                 <div class="start-button" onclick="firstSlide()">Unveil the Big Day</div>
-
-                <!-- Countdown Container -->
-                <!-- <div class="countdown-container">
-                    <h2 class="countdown-title" style="margin-top: 0px;">Our journey begins in</h2>
-                    <div id="countdown-timer" class="countdown">Loading...</div>
-                </div> -->
             </div>
         </div>
+        <!-- End of First Screen -->
+
+        <!-- Start of Countdown Screen -->
         <div class="slide active background-overlay" id="welcome">
             <div class="content-wrapper">
-                <!-- Removed the h1 and start-button div -->
                 <div class="countdown-container">
                     <h2 class="countdown-title" style="margin-top: 0px;">Our journey begins in</h2>
                     <div id="countdown-timer" class="countdown">Loading...</div>
@@ -82,18 +77,15 @@
                 <i class="fas fa-arrow-left"></i> Swipe Left
             </div>
         </div>
+        <!-- End of Countdown Screen -->
 
-
-        <div class="slide background-override" style="padding-top: 25%; justify-content: start;" id="invitation">
+        <div class="slide background-overlay" style="padding-top: 28%; justify-content: start;" id="invitation">
             <div class="content-wrapper">
                 <h2>
                     "For now I have chosen and consecrated this house, that my name may be there for ever, and mine eyes
                     and mine heart shall be there perpetually."
                 </h2>
-                <div>(2 Chronicles 7:16)</div><br><br><br>
-                <!-- <p style="margin-bottom: -39px;">Mr. & Mrs. Joseph & Grace Mahfoud<br>
-                    Mr. & Mrs. Nohra & Chake El Mondalek<br><br>Request the honor
-                    of your presence at the wedding of their son and daughter</p><br> -->
+                <div>(2 Chronicles 7:16)</div>
                 <div class="parents-row">
                     <div class="parents-column">
                         <div>Joseph & Grace</div>
@@ -105,19 +97,12 @@
                         <div>El Mondalek</div>
                     </div>
                 </div>
-                <p>Request the honor
-                    of your presence at the wedding of their son and daughter</p>
-
-                <h1> Joe & Nour</h1>
+                <p>Request the honor of your presence at the wedding of their son and daughter</p>
+                <h1 style="padding-top: 25px;"> Joe & Nour</h1>
             </div>
         </div>
 
-        <!-- ---------------------------------------------------------------------- -->
-        <div class="slide background-no-overlay">
-        </div>
-        <!-- ---------------------------------------------------------------------- -->
-
-        <div class="slide background-override" style="padding-top: 20%; justify-content: start;" id="details">
+        <div class="slide background-overlay" style="padding-top: 20%; justify-content: start;" id="details">
             <div class="content-wrapper" style="gap: 8px;">
                 <h1>Wedding Details</h1>
                 <div class="content-wrapper" style="gap: 20px;">
@@ -175,14 +160,18 @@
                     </div>
                 </div>
                 <p class="date-time" style="padding-top: 15px;">
-                    <i class="fas fa-calendar-alt"></i> 6:00 PM
+                <div
+                    style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 15px;">
+                    <p><i class="fas fa-calendar-alt church"></i> 6:00 PM</p>
+                    <p>
+                        <i class="fas fa-church"></i>
+                        <a class="location-link" href="https://maps.app.goo.gl/pABYq52xYZqbibf89?g_st=aw"
+                            target="_blank">Mar Abda - Blat</a>
+                    </p>
+                </div>
                 </p>
-                <p class="church">
-                    <i class="fas fa-church"></i>
-                    <a class="location-link" href="https://maps.app.goo.gl/pABYq52xYZqbibf89?g_st=aw"
-                        target="_blank">Mar Abda - Blat</a>
-                </p>
-                <p class="venue">
+
+                <p>
                     <i class="fas fa-map-marker-alt"></i>
                     <a class="location-link" href="https://maps.app.goo.gl/gERGB6DV5BkS736N6?g_st=aw"
                         target="_blank">Villa Olea - Mehrine</a>
@@ -190,26 +179,22 @@
             </div>
         </div>
 
-        <!-- ---------------------------------------------------------------------- -->
-        <div class="slide background-no-overlay">
-        </div>
-        <!-- ---------------------------------------------------------------------- -->
-
-        <div class="slide slide-special background-override" id="gift-registry">
+        <div class="slide slide-special background-overlay" id="gift-registry">
             <div class="content-wrapper">
-                <h1>Gift Registry</h1>
+                <h1 style="padding-bottom: 45px;">Gift Registry</h1>
                 <p>
                     Your love, joy, and presence mean the world to us on our special day. If you'd like, a wedding
-                    registry is available at<br><br>Whish Money<br>
+                    registry is available at<br><br><br><br>Whish Money<br>
                 </p>
                 <p>Account Number: 123456789</p>
             </div>
         </div>
 
-        <div class="slide slide-special background-override" id="rsvp">
+        <div class="slide slide-special background-overlay" id="rsvp">
             <div class="content-wrapper">
                 <h1>RSVP</h1>
-                <p>We'd love to celebrate with you! Please let us know if you can make it by 26 June 2025.</p>
+                <p style="padding-top: 40px; padding-bottom: 40px;">We'd love to celebrate with you! Please let us know
+                    if you can make it by 26 June 2025.</p>
                 <button>Confirm Attendance</button>
             </div>
         </div>
@@ -242,7 +227,8 @@
             <p id="confirmation-message"></p>
         </div>
     </div>
-    <!-- Fullscreen Loading Overlay -->
+
+    <!-- Start of Loading Screen -->
     <div id="loading-screen">
         <script>document.getElementById("slides").style.display = "none"; </script>
         <div class="loading-content">
@@ -254,8 +240,8 @@
             </div>
         </div>
     </div>
+    <!-- End of Loading Screen -->
 
-    <!-- Custom Script -->
     <script src="script.js"></script>
 </body>
 
