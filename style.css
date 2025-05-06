@@ -491,8 +491,8 @@
     justify-content: center;     /* centers all items horizontally */
     align-items: center;         /* vertically centers them within the row */
     gap: 2rem;                   /* space between columns */
-    margin-top: 5rem;
-    margin-bottom: 5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
     font-size: large;
     font-weight: bold;
   }
