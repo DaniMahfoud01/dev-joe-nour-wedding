@@ -39,12 +39,12 @@
         <span id="countdown-timer-sticky">Loading...</span>
     </div>
 
-    <!-- <div class="background-wrapper">
+    <div class="background-wrapper">
         <video class="background-video" autoplay loop muted playsinline>
             <source src="background.mp4" type="video/mp4" />
             Your browser does not support the video tag.
         </video>
-    </div> -->
+    </div>
 
     <audio id="background-music" loop autoplay>
         <source src="music.mp3" type="audio/mp3" />
@@ -102,7 +102,7 @@
             </div>
         </div>
 
-        <div class="slide background-overlay" style="padding-top: 20%; justify-content: start;" id="details">
+        <div class="slide background-overlay" id="details">
             <div class="content-wrapper" style="gap: 8px;">
                 <h1>Wedding Details</h1>
                 <div class="content-wrapper" style="gap: 20px;">
@@ -159,25 +159,37 @@
                         </div>
                     </div>
                 </div>
-                <p class="date-time" style="padding-top: 15px;">
-                <div
-                    style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 15px;">
-                    <p><i class="fas fa-calendar-alt church"></i> 6:00 PM</p>
-                    <p>
+            </div>
+        </div>
+
+        <div class="slide background-overlay" id="details-location">
+            <div class="content-wrapper"
+                style="max-width: 600px; margin: auto; padding: 24px; text-align: center; display: flex; flex-direction: column; gap: 20px;">
+                <h1 style="font-size: 2rem; letter-spacing: 1px; text-transform: uppercase;">Time & Locations</h1>
+
+                <div style="display: flex; flex-direction: column; gap: 12px; font-size: 1.1rem;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>6:00 PM</span>
+                    </div>
+
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                         <i class="fas fa-church"></i>
                         <a class="location-link" href="https://maps.app.goo.gl/pABYq52xYZqbibf89?g_st=aw"
                             target="_blank">Mar Abda - Blat</a>
-                    </p>
-                </div>
-                </p>
+                    </div>
 
-                <p>
-                    <i class="fas fa-map-marker-alt"></i>
-                    <a class="location-link" href="https://maps.app.goo.gl/gERGB6DV5BkS736N6?g_st=aw"
-                        target="_blank">Villa Olea - Mehrine</a>
-                </p>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <a class="location-link" href="https://maps.app.goo.gl/gERGB6DV5BkS736N6?g_st=aw"
+                            target="_blank">Villa Olea - Mehrine</a>
+                    </div>
+
+                    <div style="font-size: small;">click on the name to get redirected to the map ↑</div>
+                </div>
             </div>
         </div>
+
 
         <div class="slide slide-special background-overlay" id="gift-registry">
             <div class="content-wrapper">
