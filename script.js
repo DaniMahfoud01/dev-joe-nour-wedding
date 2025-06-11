@@ -6,20 +6,20 @@ let selectedInvitee = null;
 const slides = document.querySelectorAll(".slide");
 const music = document.getElementById("background-music");
 const musicButton = document.getElementById("music-button");
-const weddingDate = new Date("July 19, 2025 18:00:00").getTime();
+const weddingDate = new Date("July 19, 2025 18:30:00").getTime();
 
-const parts = [
-    "aHR0cHM6Ly9zY3JpcHQu",
-    "Z29vZ2xlLmNvbS9tYWNyb3M",
-    "vcy9BS2Z5Y2J6SzZyUlg0RDNJbl9OQ3FlZjh6",
-    "QVhDYnJSejhpSVdPT3BxUGtqbjUyVmFyYjdibHZpTFFmWTJq",
-    "ZnItcmhtRXZlby9leGVjIg=="
-];
+// const parts = [
+//     "aHR0cHM6Ly9zY3JpcHQu", // https://script.
+//     "Z29vZ2xlLmNvbS9tYWNyb3M", // google.com/macros
+//     "vcy9BS2Z5Y2J3SWlLZllBUzVic1h6N3hoRXhfTjg4d0c4eWctZGpyM3p0RjJEWURWaUln", // /s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIg
+//     "Ulh4THBCY3lLX0ZrQWVqdGRKbXF5eC9leGVj" // RXxLpBcyK_xFkAejtdJmqyx/exec
+// ];
 
-const ShParts = [parts[3], parts[0], parts[4], parts[1], parts[2]];
-const CoOrParts = [ShParts[1], ShParts[3], ShParts[4], ShParts[0], ShParts[2]];
-const fuEnParts = CoOrParts.join("");
-const aU = atob(fuEnParts);
+// const ShParts = [parts[2], parts[0], parts[3], parts[1]];
+// const CoOrParts = [ShParts[1], ShParts[3], ShParts[0], ShParts[2]];
+// const fuEnParts = CoOrParts.join("");
+// const aU = atob(fuEnParts);
+
 
 document.addEventListener("DOMContentLoaded", () => {
     // Only start countdown if the link is valid, i.e. after hideLoadingScreen() is called
@@ -35,15 +35,40 @@ window.addEventListener("touchstart", handleTouchStart, false);
 fetchInvitees();
 
 async function fetchInvitees() {
+    // Start UI while data is loading
+    hideLoadingScreen(); // ✅ Don't wait
+
     try {
-        const response = await fetch(aU.replace(/"$/, ""));
+        const response = await fetch('https://script.google.com/macros/s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIgRXxLpBcyK_xFkAejtdJmqyx/exec');
         invitees = await response.json();
-        checkGuestFromURL();
     } catch (error) {
         console.error("Error fetching invitees:", error);
         showErrorScreen();
+        return;
+    }
+
+    checkGuestFromURL(); // ✅ Now runs after data is fetched
+}
+
+
+function checkGuestFromURL() {
+    const urlParams = new URLSearchParams(window.location.search);
+    let encodedKey = urlParams.get("key");
+
+    if (!encodedKey) return showErrorScreen();
+
+    encodedKey = decodeURIComponent(encodedKey);
+    const guestName = decodeName(encodedKey);
+    const foundInvitee = invitees.find(inv => inv.name === guestName);
+
+    if (foundInvitee) {
+        selectedInvitee = foundInvitee;
+        hideLoadingScreen(); // Slide transition starts here
+    } else {
+        showErrorScreen();
     }
 }
+
 
 function handleTouchStart(evt) {
     xDown = evt.touches[0].clientX;
@@ -151,13 +176,13 @@ function showGuest(invitee) {
     document.getElementById("confirm-button").style.display = "block";
 }
 
+// Optimized confirmRSVP with better user experience (no visual changes)
 function confirmRSVP() {
     if (!selectedInvitee) return;
 
     const rsvpResponse = "Confirmed";
     let guestCount = 0;
 
-    // If guests are allowed, read the input value
     if (selectedInvitee.maxGuests > 0) {
         guestCount = parseInt(document.getElementById("guest-number").value, 10);
         if (!guestCount || guestCount <= 0 || guestCount > selectedInvitee.maxGuests) {
@@ -166,8 +191,15 @@ function confirmRSVP() {
         }
     }
 
+    // Disable confirm button to prevent multiple clicks
+    const confirmBtn = document.getElementById("confirm-button");
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Submitting...";
+    spawnHearts();
+
+
     // Send RSVP Data
-    fetch(aU.replace(/"$/, ""), {
+    fetch('https://script.google.com/macros/s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIgRXxLpBcyK_xFkAejtdJmqyx/exec', {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -176,15 +208,21 @@ function confirmRSVP() {
             response: rsvpResponse,
             guestCount: guestCount
         })
-    });
-
-    // Custom popup message
-    const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
-
-
-    showConfirmationPopup(message);
-    closeModal(); // Close RSVP input modal
+    })
+        .then(() => {
+            const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
+            showConfirmationPopup(message);
+            closeModal();
+        })
+        .catch(() => {
+            showConfirmationPopup("Something went wrong. Please try again.", true);
+        })
+        .finally(() => {
+            confirmBtn.disabled = false;
+            confirmBtn.textContent = "Confirm";
+        });
 }
+
 
 function showConfirmationPopup(message, isError = false) {
     const modal = document.getElementById("rsvp-confirm-modal");
@@ -391,3 +429,33 @@ function startExperience() {
     toggleMusic();
 
 }
+
+function spawnHearts(count = 10) {
+    for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+
+            // Random horizontal position
+            const leftOffset = 40 + Math.random() * 20; // 40% to 60%
+            heart.style.left = `${leftOffset}%`;
+
+            // Random font size
+            heart.style.fontSize = `${22 + Math.random() * 14}px`;
+
+            // Slight rotation
+            heart.style.transform = `rotate(${Math.random() * 40 - 20}deg)`;
+
+            // Use various pink emojis for fun
+            const emojis = ["💗", "💖", "💕", "💞"];
+            heart.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 2500); // match CSS animation duration
+        }, i * 250); // space out creation: 150ms between each
+    }
+}
+
