@@ -128,6 +128,7 @@ function updateSlidePosition() {
     } else {
         countdown.style.display = "none";  // Hide countdown
     }
+
 }
 
 function toggleMusic() {
@@ -159,22 +160,33 @@ function closeModal() {
 
 function showGuest(invitee) {
     selectedInvitee = invitee;
-    document.getElementById("selected-name").textContent = invitee.name;
+    const modal = document.getElementById("rsvp-modal");
+    const nameField = document.getElementById("selected-name");
+    const guestCountDiv = document.getElementById("guest-count");
+    const confirmBtn = document.getElementById("confirm-button");
 
-    // If maxGuests > 0, show the number field
-    if (invitee.maxGuests > 0) {
-        document.getElementById("guest-count").style.display = "block";
-        document.getElementById("guest-number").value = invitee.maxGuests; // default
-        document.getElementById("guest-number").max = invitee.maxGuests;
-        document.getElementById("guest-limit").textContent =
-            `${invitee.maxGuests} guests`;
+    nameField.textContent = `RSVP for ${invitee.name}`;
+
+    if (invitee.rsvp === "Confirmed") {
+        guestCountDiv.style.display = "none";
+        confirmBtn.style.display = "none";
+
+        nameField.innerHTML = `${invitee.name} confirmed for ${invitee.confirmedGuests} guest${invitee.confirmedGuests > 1 ? 's' : ''}`;
     } else {
-        document.getElementById("guest-count").style.display = "none";
+        if (invitee.maxGuests > 0) {
+            guestCountDiv.style.display = "block";
+            document.getElementById("guest-number").value = invitee.maxGuests;
+            document.getElementById("guest-number").max = invitee.maxGuests;
+            document.getElementById("guest-limit").textContent = `${invitee.maxGuests} guests`;
+        } else {
+            guestCountDiv.style.display = "none";
+        }
+        confirmBtn.style.display = "block";
     }
 
-    // Show confirm button
-    document.getElementById("confirm-button").style.display = "block";
+    modal.style.display = "flex";
 }
+
 
 // Optimized confirmRSVP with better user experience (no visual changes)
 function confirmRSVP() {
@@ -212,6 +224,8 @@ function confirmRSVP() {
         .then(() => {
             const message = `Thank you for your confirmation!<br>We can't wait to celebrate with you ♡`;
             showConfirmationPopup(message);
+            selectedInvitee.confirmedGuests = guestCount;
+            selectedInvitee.rsvp = rsvpResponse;
             closeModal();
         })
         .catch(() => {
@@ -458,4 +472,3 @@ function spawnHearts(count = 10) {
         }, i * 250); // space out creation: 150ms between each
     }
 }
-
