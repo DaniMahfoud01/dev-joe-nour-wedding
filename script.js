@@ -171,7 +171,7 @@ function showGuest(invitee) {
         guestCountDiv.style.display = "none";
         confirmBtn.style.display = "none";
 
-        nameField.innerHTML = `${invitee.name} confirmed for ${invitee.confirmedGuests} guest${invitee.confirmedGuests > 1 ? 's' : ''}`;
+        nameField.innerHTML = `${invitee.name} already confirmed for ${invitee.confirmedGuests} guest${invitee.confirmedGuests > 1 ? 's' : ''}`;
     } else {
         if (invitee.maxGuests > 0) {
             guestCountDiv.style.display = "block";
