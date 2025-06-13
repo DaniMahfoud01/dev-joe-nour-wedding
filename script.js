@@ -9,14 +9,15 @@ const musicButton = document.getElementById("music-button");
 const weddingDate = new Date("July 19, 2025 18:30:00").getTime();
 
 const parts = [
-    "aHR0cHM6Ly9zY3JpcHQu", // https://script.
-    "Z29vZ2xlLmNvbS9tYWNyb3M", // google.com/macros
-    "vcy9BS2Z5Y2J3SWlLZllBUzVic1h6N3hoRXhfTjg4d0c4eWctZGpyM3p0RjJEWURWaUln", // /s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIg
-    "Ulh4THBCY3lLX0ZrQWVqdGRKbXF5eC9leGVj" // RXxLpBcyK_xFkAejtdJmqyx/exec
+    "aHR0cHM6Ly9zY3JpcHQu",
+    "Z29vZ2xlLmNvbS9tYWNyb3M",
+    "vcy9BS2Z5Y2J6SzZyUlg0RDNJbl9OQ3FlZjh6",
+    "QVhDYnJSejhpSVdPT3BxUGtqbjUyVmFyYjdibHZpTFFmWTJq",
+    "ZnItcmhtRXZlby9leGVjIg=="
 ];
 
-const ShParts = [parts[2], parts[0], parts[3], parts[1]];
-const CoOrParts = [ShParts[1], ShParts[3], ShParts[0], ShParts[2]];
+const ShParts = [parts[3], parts[0], parts[4], parts[1], parts[2]];
+const CoOrParts = [ShParts[1], ShParts[3], ShParts[4], ShParts[0], ShParts[2]];
 const fuEnParts = CoOrParts.join("");
 const aU = atob(fuEnParts);
 
