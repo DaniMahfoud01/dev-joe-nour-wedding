@@ -8,17 +8,17 @@ const music = document.getElementById("background-music");
 const musicButton = document.getElementById("music-button");
 const weddingDate = new Date("July 19, 2025 18:30:00").getTime();
 
-// const parts = [
-//     "aHR0cHM6Ly9zY3JpcHQu", // https://script.
-//     "Z29vZ2xlLmNvbS9tYWNyb3M", // google.com/macros
-//     "vcy9BS2Z5Y2J3SWlLZllBUzVic1h6N3hoRXhfTjg4d0c4eWctZGpyM3p0RjJEWURWaUln", // /s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIg
-//     "Ulh4THBCY3lLX0ZrQWVqdGRKbXF5eC9leGVj" // RXxLpBcyK_xFkAejtdJmqyx/exec
-// ];
+const parts = [
+    "aHR0cHM6Ly9zY3JpcHQu", // https://script.
+    "Z29vZ2xlLmNvbS9tYWNyb3M", // google.com/macros
+    "vcy9BS2Z5Y2J3SWlLZllBUzVic1h6N3hoRXhfTjg4d0c4eWctZGpyM3p0RjJEWURWaUln", // /s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIg
+    "Ulh4THBCY3lLX0ZrQWVqdGRKbXF5eC9leGVj" // RXxLpBcyK_xFkAejtdJmqyx/exec
+];
 
-// const ShParts = [parts[2], parts[0], parts[3], parts[1]];
-// const CoOrParts = [ShParts[1], ShParts[3], ShParts[0], ShParts[2]];
-// const fuEnParts = CoOrParts.join("");
-// const aU = atob(fuEnParts);
+const ShParts = [parts[2], parts[0], parts[3], parts[1]];
+const CoOrParts = [ShParts[1], ShParts[3], ShParts[0], ShParts[2]];
+const fuEnParts = CoOrParts.join("");
+const aU = atob(fuEnParts);
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -39,7 +39,7 @@ async function fetchInvitees() {
     hideLoadingScreen(); // ✅ Don't wait
 
     try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIgRXxLpBcyK_xFkAejtdJmqyx/exec');
+        const response = await fetch(aU.replace(/"$/, ""));
         invitees = await response.json();
     } catch (error) {
         console.error("Error fetching invitees:", error);
@@ -211,7 +211,7 @@ function confirmRSVP() {
 
 
     // Send RSVP Data
-    fetch('https://script.google.com/macros/s/AKfycbwIiKfYAS5bsXz7xhEx_N88wG8yg-djr3ztF2DYDVaIgRXxLpBcyK_xFkAejtdJmqyx/exec', {
+    fetch(aU.replace(/"$/, ""), {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
